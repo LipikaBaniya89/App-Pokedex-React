@@ -51,6 +51,16 @@
   width: 90%; /* Could be more or less, depending on screen size */
 }
 
+.content {
+  background-color: #ffffff;
+  margin-left: 40px;
+  border-radius: 20px;
+  box-shadow: "#d5d6dc";
+
+  width: 90%; /* Could be more or less, depending on screen size */
+  height: 500px;
+}
+
 /* The Close Button */
 .close {
   color: #aaa;
@@ -86,6 +96,19 @@
   box-shadow: "#d5d6dc";
 }
 
+.flex-outside {
+  transition: box-shadow .3s;
+  margin-top: 30px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 700px;
+  height: 500px;
+  background-color: #f3f4f7 ;
+  box-shadow: "#d5d6dc";
+}
+
 .flex-pokemon {
   transition: box-shadow .3s;
   margin-top: 30px;
@@ -115,6 +138,13 @@
 
 .cardBody {
   width: 700px;
+  align-items: flex-start;
+
+}
+
+.body {
+  width: 700px;
+  height: 500px;
   align-items: flex-start;
 
 }

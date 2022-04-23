@@ -5,8 +5,9 @@ import { FaPlus, FaTrashAlt } from 'react-icons/fa';
 import Pokedex from "./Pokedex";
 import styled from "styled-components";
 import Cute from "../cute.png";
+import ReactDOM from "react-dom";
 
-class Pokemon extends Component {
+class Pokemon extends React.Component {
     // Constructor 
     constructor(props) {
         super(props);
@@ -23,8 +24,13 @@ class Pokemon extends Component {
         });
     };
 
-  
-      hasPokemonInList(id) {
+    closeModal = e => {
+      this.setState({
+          openModal:false
+      })
+    }
+
+    hasPokemonInList(id) {
         return this.state.myPokeList.some(element => {
             if (element.id === id) {
                 return true;
@@ -135,60 +141,74 @@ class Pokemon extends Component {
                 <h1 className='header'> Pokedex </h1>
                 <p className='para'>Is your pokemon on our Codex?</p>
                 <div className="App-logo">
-                        <button className="add" onClick={e => {this.showModal();}}> <FaPlus/> Add</button>   
+                        <button className="add" onClick={e => {this.showModal();}}> <FaPlus/> Add</button> 
                 </div>
 
-                <div className='modal-content'>
-                    <div className='searchList'>
-                        <ul>
+                <Container>
+                        {/* <ul> */}
                             {myPokeList.map((pokemon) => (
-                                <li className="flex" key={pokemon.id}>
-                                    <img className="cardImg" src={pokemon.imageUrl} alt="Card image cap" />
-                                    <div className="cardBody">
-                                        <h5 className="cardTitle">{pokemon.name}</h5>
-                                        <div className="pokemondetails">
-                                            <div className="ability">
-                                                <h4>HP</h4>
-                                                <h4>STR</h4>
-                                                <h4>Weak</h4>
-                                            </div>
+                              <Grid container spacing={2}>
+                                <Grid container item sm={2}>
+                                  {/* <li className="flex" key={pokemon.id}> */}
+                                          <img className="cardImg" src={pokemon.imageUrl} alt="Card image cap" />
+                                            <div className="cardBody">
+                                                <h5 className="cardTitle">{pokemon.name}</h5>
+                                                <div className="pokemondetails">
+                                                    <div className="ability">
+                                                        <h4>HP</h4>
+                                                        <h4>STR</h4>
+                                                        <h4>Weak</h4>
+                                                    </div>
 
-                                            <div className="values">
-                                                <Hp percentage={HP(pokemon.hp)}>
-                                                <div></div>
-                                                </Hp>
-                                                <Str percentage={StrengthLevel(pokemon.attacks)}>
-                                                <div></div>
-                                                </Str>
-                                                <Weak percentage={Weakness(pokemon.weaknesses)}>
-                                                <div></div>
-                                                </Weak>
-                                            </div>
-                                    </div>
+                                                  <div className="values">
+                                                      <Hp percentage={HP(pokemon.hp)}>
+                                                      <div></div>
+                                                      </Hp>
+                                                      <Str percentage={StrengthLevel(pokemon.attacks)}>
+                                                      <div></div>
+                                                      </Str>
+                                                      <Weak percentage={Weakness(pokemon.weaknesses)}>
+                                                      <div></div>
+                                                      </Weak>
+                                                  </div>
+                                              </div>
 
-                                    <Happinesslevel>
-                                    <Happinesslevel>{HappenessLogos}</Happinesslevel>
-                                    </Happinesslevel>
-                                </div>
-
-                                <button className='success'><FaPlus/></button>
-                                <button className='danger' onClick={() => this.removePokemon(pokemon.id)}><FaTrashAlt/></button>
-                               
-                            </li>
+                                          <Happinesslevel>
+                                          <Happinesslevel>{HappenessLogos}</Happinesslevel>
+                                          </Happinesslevel>
+                                      </div>
+                                      <button className='danger' onClick={() => this.removePokemon(pokemon.id)}><FaTrashAlt/></button>
+                                  </Grid>
+                                </Grid>
+                            // {/* </li> */}
                         ))
                         }
-                    </ul>
-                </div>
-            </div>
+                    {/* </ul> */}
+            </Container>
 
        
-            
-            <Pokedex openModal={this.state.openModal} addPokemon={this.addPokemonToList}/>
+            <Pokedex openModal={this.state.openModal} addPokemon={this.addPokemonToList} closeModal={this.state.closeModal}/>
         
             </>
         );
     }
 }
+
+const Container = styled.div`
+  overflow: hidden;
+  z-index: 1;
+  width: 500px;
+  height: 500px;
+`;
+
+const Grid = styled.div`
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 1rem 2rem;
+  height:500px;
+`;
+
 const Hp = styled.div`
   width: 10rem;
   height: 1.8rem;
@@ -244,4 +264,5 @@ const Happinesslevel = styled.div`
   
 `;
 
+ReactDOM.render(<Pokemon />, document.getElementById("root"));
 export default Pokemon

@@ -29,12 +29,14 @@ class Pokedex extends Component {
             })
     }
 
-    addNewPokemon(pokemon) {
-        this.props.addPokemon(pokemon);
+    closeModal = e => {
+      this.setState({
+          openModal:false
+      })
     }
 
-    closeModal = e => {
-      this.props.closeModal();
+    addNewPokemon(pokemon) {
+        this.props.addPokemon(pokemon);
     }
 
     handleChange = (e) => {
@@ -158,7 +160,7 @@ class Pokedex extends Component {
                 </div>
 
                 <div className="App-logo">
-                  <button className="close" onClic={this.closeModal}> <FaTimes/></button>
+                        <button className="close" onClick={e => {this.closeModal();}}> <FaTimes/> Close</button> 
                 </div>
 
                 <div className='modal-content'>
@@ -193,7 +195,7 @@ class Pokedex extends Component {
                                               <Happinesslevel>{HappenessLogos}</Happinesslevel>
                                               </Happinesslevel>
                                             </div>
-                                      <button className='success' onClick={() => this.addNewPokemon(pokemon)}><FaPlus/></button> 
+                                      <button className='success' onClick={() => this.addNewPokemon(pokemon) }><FaPlus/></button> 
                                   </li>
                               ))}
                           </ul>
