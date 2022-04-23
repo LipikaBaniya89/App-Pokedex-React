@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 // Make custom stuff. Remove these
 import '../App.css'
-import { FaPlus, FaTrashAlt, FaCross } from 'react-icons/fa';
+import { FaPlus, FaTrashAlt } from 'react-icons/fa';
 import Pokedex from "./Pokedex";
 import styled from "styled-components";
 import Cute from "../cute.png";
@@ -183,7 +183,7 @@ class Pokemon extends Component {
 
        
             
-            <Pokedex openModal={this.state.openModal} addPokemon={this.addPokemonToList} closeModal={this.state.closeModal}/>
+            <Pokedex openModal={this.state.openModal} addPokemon={this.addPokemonToList}/>
         
             </>
         );

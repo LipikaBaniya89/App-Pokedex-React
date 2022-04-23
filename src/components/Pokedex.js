@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import '../App.css'
 import styled from "styled-components";
 import Cute from "../cute.png";
-import { FaPlus, FaTrashAlt, FaTimes, FaSearch } from 'react-icons/fa';
+import Pokemon from './Pokemon.js';
+import { FaPlus,  FaTimes, FaSearch } from 'react-icons/fa';
 
 class Pokedex extends Component {
     // Constructor 
@@ -32,12 +33,9 @@ class Pokedex extends Component {
         this.props.addPokemon(pokemon);
     }
 
-    
     closeModal = e => {
-      this.setState({
-        closeModal:false
-      })
-    };
+      this.props.closeModal();
+    }
 
     handleChange = (e) => {
       let searchRes = [];
@@ -56,7 +54,7 @@ class Pokedex extends Component {
               searchItems: []
           });
       }
-  };
+    };
 
     render() {
         const { DataisLoaded, items, searchItems } = this.state;
@@ -159,26 +157,26 @@ class Pokedex extends Component {
                     <FaSearch style={{fontSize:"20px", color:"#fafafa"}}/>   
                 </div>
 
-                  <div className="App-logo">
-                    <button className="close" onClick={this.closeModal}> <FaTimes/></button>
-                  </div>
+                <div className="App-logo">
+                  <button className="close" onClic={this.closeModal}> <FaTimes/></button>
+                </div>
 
-                  <div className='modal-content'>
-                      <div className='searchList'>
-                          <ul>
-                              {pokeList.map((pokemon) => (
-                                  <li className="flex" key={pokemon.id}>
-                                      <img className="cardImg" src={pokemon.imageUrl} alt="Card image cap" />
-                                      <div className="cardBody">
+                <div className='modal-content'>
+                    <div className='searchList'>
+                        <ul>
+                            {pokeList.map((pokemon) => (
+                                <li className="flex" key={pokemon.id}>
+                                    <img className="cardImg" src={pokemon.imageUrl} alt="Card image cap" />
+                                        <div className="cardBody">
                                           <h5 className="cardTitle">{pokemon.name}</h5>
-                                          <div className="pokemondetails">
-                                              <div className="ability">
+                                            <div className="pokemondetails">
+                                                <div className="ability">
                                                   <h4>HP</h4>
                                                   <h4>STR</h4>
                                                   <h4>Weak</h4>
-                                              </div>
+                                                </div>
 
-                                              <div className="values">
+                                                <div className="values">
                                                   <Hp percentage={HP(pokemon.hp)}>
                                                   <div></div>
                                                   </Hp>
@@ -188,25 +186,22 @@ class Pokedex extends Component {
                                                   <Weak percentage={Weakness(pokemon.weaknesses)}>
                                                   <div></div>
                                                   </Weak>
-                                              </div>
-                                          </div>
+                                                </div>
+                                             </div>
 
-                                          <Happinesslevel>
-                                          <Happinesslevel>{HappenessLogos}</Happinesslevel>
-                                          </Happinesslevel>
-                                      </div>
-                                      <button className='success' onClick={() => this.addNewPokemon(pokemon)}><FaPlus/></button>
-                                      
+                                              <Happinesslevel>
+                                              <Happinesslevel>{HappenessLogos}</Happinesslevel>
+                                              </Happinesslevel>
+                                            </div>
+                                      <button className='success' onClick={() => this.addNewPokemon(pokemon)}><FaPlus/></button> 
                                   </li>
-                              ))
-                              }
+                              ))}
                           </ul>
                       </div>
                   </div>
-                </div>
-            
-    </>
-        );
+                </div>  
+          </>
+      );
     }  
 }
 
