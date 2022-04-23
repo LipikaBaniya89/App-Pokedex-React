@@ -1,19 +1,17 @@
 import React, { Component } from 'react'
 // Make custom stuff. Remove these
 import '../App.css'
-import Card from '../img/card.jpg'
 import { FaPlus, FaTrashAlt, FaCross } from 'react-icons/fa';
 import Pokedex from "./Pokedex";
 import styled from "styled-components";
 import Cute from "../cute.png";
-import ReactDOM from "react-dom";
 
 class Pokemon extends Component {
     // Constructor 
     constructor(props) {
         super(props);
         this.state = {
-            items: [],
+            myPokeList: [],
             openModal: false,
         };
     }
@@ -25,22 +23,7 @@ class Pokemon extends Component {
         });
     };
 
-    handleClick = () => {
-        if (!this.state.openModal) {
-          document.addEventListener("click", this.handleOutsideClick, false);
-        } else {
-          document.removeEventListener("click", this.handleOutsideClick, false);
-        }
-    
-        this.setState(prevState => ({
-          openModal: !prevState.openModal
-        }));
-      };
-    
-      handleOutsideClick = e => {
-        if (!this.node.contains(e.target)) this.handleClick();
-      };
-
+  
       hasPokemonInList(id) {
         return this.state.myPokeList.some(element => {
             if (element.id === id) {
@@ -68,9 +51,8 @@ class Pokemon extends Component {
         })
     }
 
-render() {
+  render() {
     const { myPokeList } = this.state;
-    const {items } = this.state;
 
     const HP = (HP) => {
         if (Number(HP) > 100 ) {
@@ -141,7 +123,7 @@ render() {
 
       for (
         let i = 0;
-        i < Happiness(items.hp, items.attacks, items.weaknesses);
+        i < Happiness(myPokeList.hp, myPokeList.attacks, myPokeList.weaknesses);
         i += 1
       ) {
         HappenessLogos.push(<img src={Cute} alt="cut" />);
@@ -153,16 +135,13 @@ render() {
                 <h1 className='header'> Pokedex </h1>
                 <p className='para'>Is your pokemon on our Codex?</p>
                 <div className="App-logo">
-                        <button className="add" onClick={e => {this.showModal();}}> <FaPlus/> Add</button>
-                        {this.state.openModal && (
-                            <button onClick={() => this.handleClick()}>close modal</button>
-                        )}     
+                        <button className="add" onClick={e => {this.showModal();}}> <FaPlus/> Add</button>   
                 </div>
 
                 <div className='modal-content'>
                     <div className='searchList'>
                         <ul>
-                            {items.map((pokemon) => (
+                            {myPokeList.map((pokemon) => (
                                 <li className="flex" key={pokemon.id}>
                                     <img className="cardImg" src={pokemon.imageUrl} alt="Card image cap" />
                                     <div className="cardBody">
@@ -191,15 +170,20 @@ render() {
                                     <Happinesslevel>{HappenessLogos}</Happinesslevel>
                                     </Happinesslevel>
                                 </div>
+
                                 <button className='success'><FaPlus/></button>
+                                <button className='danger' onClick={() => this.removePokemon(pokemon.id)}><FaTrashAlt/></button>
+                               
                             </li>
                         ))
                         }
                     </ul>
                 </div>
             </div>
-  
-                <Pokedex openModal={this.state.openModal} />
+
+       
+            
+            <Pokedex openModal={this.state.openModal} addPokemon={this.addPokemonToList} closeModal={this.state.closeModal}/>
         
             </>
         );
@@ -260,5 +244,4 @@ const Happinesslevel = styled.div`
   
 `;
 
-ReactDOM.render(<Pokemon />, document.getElementById("root"));
 export default Pokemon

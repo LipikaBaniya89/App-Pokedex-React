@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
 import '../App.css'
-import Pokemon from './Pokemon';
 import styled from "styled-components";
 import Cute from "../cute.png";
-import { useDispatch } from "react-redux";
-import { FaPlus, FaTrashAlt, FaCross, FaSearch } from 'react-icons/fa';
+import { FaPlus, FaTrashAlt, FaTimes, FaSearch } from 'react-icons/fa';
 
 class Pokedex extends Component {
     // Constructor 
@@ -14,6 +12,7 @@ class Pokedex extends Component {
         this.state = {
             items: [],
             openModal:true,
+            searchItems: [],
             DataisLoaded: false,
         };
     }
@@ -33,8 +32,40 @@ class Pokedex extends Component {
         this.props.addPokemon(pokemon);
     }
 
+    
+    closeModal = e => {
+      this.setState({
+        closeModal:false
+      })
+    };
+
+    handleChange = (e) => {
+      let searchRes = [];
+
+      if(e) {
+          searchRes = this.state.items.filter((item) => {
+              let name = item.name.toLowerCase();
+              let type = item.type.toLowerCase();
+              return (name.includes(e.toLowerCase())) || (type.includes(e.toLowerCase()));
+          });
+          this.setState({
+              searchItems: searchRes
+          });
+      } else {
+          this.setState({
+              searchItems: []
+          });
+      }
+  };
+
     render() {
-        const { DataisLoaded, items } = this.state;
+        const { DataisLoaded, items, searchItems } = this.state;
+        let pokeList = items;
+        
+        if(searchItems.length > 0) {
+            pokeList = searchItems;
+        }
+
         if (!DataisLoaded)
             return <div>
                 <h1> Pleses wait some time.... </h1>
@@ -120,55 +151,60 @@ class Pokedex extends Component {
           }
       
        
-    return (  
+      return (  
         <>
         <div className='CardSize poke-modal'>
                 <div className='searchBar'>
-                    <input type="text" className="searchBar" placeholder="Search pokemon by name"/>
+                    <input type="text" className="searchBar" placeholder="Search pokemon by name"  onChange={(e) => this.handleChange(e.target.value)}/>
                     <FaSearch style={{fontSize:"20px", color:"#fafafa"}}/>   
                 </div>
 
-            <div className='modal-content'>
-                <div className='searchList'>
-                    <ul>
-                        {items.map((pokemon) => (
-                            <li className="flex" key={pokemon.id}>
-                                <img className="cardImg" src={pokemon.imageUrl} alt="Card image cap" />
-                                <div className="cardBody">
-                                    <h5 className="cardTitle">{pokemon.name}</h5>
-                                    <div className="pokemondetails">
-                                        <div className="ability">
-                                            <h4>HP</h4>
-                                            <h4>STR</h4>
-                                            <h4>Weak</h4>
-                                        </div>
+                  <div className="App-logo">
+                    <button className="close" onClick={this.closeModal}> <FaTimes/></button>
+                  </div>
 
-                                        <div className="values">
-                                            <Hp percentage={HP(pokemon.hp)}>
-                                            <div></div>
-                                            </Hp>
-                                            <Str percentage={StrengthLevel(pokemon.attacks)}>
-                                            <div></div>
-                                            </Str>
-                                            <Weak percentage={Weakness(pokemon.weaknesses)}>
-                                            <div></div>
-                                            </Weak>
-                                        </div>
-                                    </div>
+                  <div className='modal-content'>
+                      <div className='searchList'>
+                          <ul>
+                              {pokeList.map((pokemon) => (
+                                  <li className="flex" key={pokemon.id}>
+                                      <img className="cardImg" src={pokemon.imageUrl} alt="Card image cap" />
+                                      <div className="cardBody">
+                                          <h5 className="cardTitle">{pokemon.name}</h5>
+                                          <div className="pokemondetails">
+                                              <div className="ability">
+                                                  <h4>HP</h4>
+                                                  <h4>STR</h4>
+                                                  <h4>Weak</h4>
+                                              </div>
 
-                                    <Happinesslevel>
-                                    <Happinesslevel>{HappenessLogos}</Happinesslevel>
-                                    </Happinesslevel>
-                                </div>
-                                <button className='success'><FaPlus/></button>
-                            </li>
-                        ))
-                        }
-                    </ul>
+                                              <div className="values">
+                                                  <Hp percentage={HP(pokemon.hp)}>
+                                                  <div></div>
+                                                  </Hp>
+                                                  <Str percentage={StrengthLevel(pokemon.attacks)}>
+                                                  <div></div>
+                                                  </Str>
+                                                  <Weak percentage={Weakness(pokemon.weaknesses)}>
+                                                  <div></div>
+                                                  </Weak>
+                                              </div>
+                                          </div>
+
+                                          <Happinesslevel>
+                                          <Happinesslevel>{HappenessLogos}</Happinesslevel>
+                                          </Happinesslevel>
+                                      </div>
+                                      <button className='success' onClick={() => this.addNewPokemon(pokemon)}><FaPlus/></button>
+                                      
+                                  </li>
+                              ))
+                              }
+                          </ul>
+                      </div>
+                  </div>
                 </div>
-            </div>
-        </div>
-        <Pokedex closeModal={this.state.closeModal}/>
+            
     </>
         );
     }  
